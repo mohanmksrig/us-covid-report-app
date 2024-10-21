@@ -14,6 +14,7 @@ interface CovidData {
   positiveIncrease: number;
   deathIncrease: number;
   stateName: string;
+  states: number;
 }
 
 const stateMapping: Record<number, string> = {
