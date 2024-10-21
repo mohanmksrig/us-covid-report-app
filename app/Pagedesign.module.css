@@ -1,0 +1,36 @@
+.header {
+    background: #fff;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+  
+  .titleContainer {
+    width: 100%;
+    text-align: center;
+  }
+  
+  .title {
+    margin: 0 !important;
+    padding: 16px 48px !important;
+    font-size: 24px !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  @media (max-width: 768px) {
+    .title {
+      font-size: 18px !important;
+      padding: 16px 40px !important;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .title {
+      font-size: 14px !important;
+      padding: 16px 32px !important;
+    }
+  }

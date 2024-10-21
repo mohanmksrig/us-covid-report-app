@@ -1,101 +1,242 @@
-import Image from "next/image";
+'use client';
+
+import React, { useState, useEffect, useRef } from 'react';
+import axios from 'axios';
+import { Layout, Typography, Dropdown, Table } from 'antd';
+import { Chart } from '@antv/g2';
+import styles from './Pagedesign.module.css';
+
+const { Header, Content } = Layout;
+const { Title } = Typography;
+
+interface CovidData {
+  date: string;
+  positiveIncrease: number;
+  deathIncrease: number;
+  stateName: string;
+}
+
+const stateMapping: Record<number, string> = {
+  1: 'Alabama',
+  2: 'Alaska',
+  3: 'Arizona',
+  4: 'Arkansas',
+  5: 'California',
+  6: 'Colorado',
+  7: 'Connecticut',
+  8: 'Delaware',
+  9: 'Florida',
+  10: 'Georgia',
+  11: 'Hawaii',
+  12: 'Idaho',
+  13: 'Illinois',
+  14: 'Indiana',
+  15: 'Iowa',
+  16: 'Kansas',
+  17: 'Kentucky',
+  18: 'Louisiana',
+  19: 'Maine',
+  20: 'Maryland',
+  21: 'Massachusetts',
+  22: 'Michigan',
+  23: 'Minnesota',
+  24: 'Mississippi',
+  25: 'Missouri',
+  26: 'Montana',
+  27: 'Nebraska',
+  28: 'Nevada',
+  29: 'New Hampshire',
+  30: 'New Jersey',
+  31: 'New Mexico',
+  32: 'New York',
+  33: 'North Carolina',
+  34: 'North Dakota',
+  35: 'Ohio',
+  36: 'Oklahoma',
+  37: 'Oregon',
+  38: 'Pennsylvania',
+  39: 'Rhode Island',
+  40: 'South Carolina',
+  41: 'South Dakota',
+  42: 'Tennessee',
+  43: 'Texas',
+  44: 'Utah',
+  45: 'Vermont',
+  46: 'Virginia',
+  47: 'Washington',
+  48: 'West Virginia',
+  49: 'Wisconsin',
+  50: 'Wyoming',
+};
+
+const aggregateDataByMonth = (data: CovidData[]): CovidData[] => {
+  const monthlyData: { [key: string]: CovidData } = {};
+
+  data.forEach(item => {
+    const date = new Date(item.date);
+    const monthKey = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}`;
+
+    if (!monthlyData[monthKey]) {
+      monthlyData[monthKey] = { ...item, date: monthKey, positiveIncrease: 0, deathIncrease: 0 };
+    }
+
+    monthlyData[monthKey].positiveIncrease += item.positiveIncrease;
+    monthlyData[monthKey].deathIncrease += item.deathIncrease;
+  });
+
+  return Object.values(monthlyData).sort((a, b) => a.date.localeCompare(b.date));
+};
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [data, setData] = useState<CovidData[]>([]);
+  const [filteredCasesData, setFilteredCasesData] = useState<CovidData[]>([]);
+  const [filteredDeathsData, setFilteredDeathsData] = useState<CovidData[]>([]);
+  const [selectedCasesState, setSelectedCasesState] = useState<string>('All States');
+  const [selectedDeathsState, setSelectedDeathsState] = useState<string>('All States');
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  const chartRef1 = useRef<HTMLDivElement>(null);
+  const chartRef2 = useRef<HTMLDivElement>(null);
+  const chartInstance1 = useRef<Chart | null>(null);
+  const chartInstance2 = useRef<Chart | null>(null);
+
+  const fetchData = async (): Promise<CovidData[]> => {
+    try {
+      const res = await axios.get<CovidData[]>('https://api.covidtracking.com/v1/us/daily.json');
+      const dataWithNames = res.data.map(item => ({
+        ...item,
+        stateName: stateMapping[item.states] || 'Unknown',
+      }));
+      return dataWithNames;
+    } catch (error) {
+      console.error("Error fetching data: ", error);
+      return [];
+    }
+  };
+
+  const renderChart = (
+    container: HTMLElement | null, 
+    chartData: CovidData[], 
+    metric: keyof CovidData, 
+    chartInstance: React.MutableRefObject<Chart | null>,
+    color: string
+  ) => {
+    if (!container || chartData.length === 0) return;
+
+    if (chartInstance.current) {
+      chartInstance.current.destroy();
+    }
+
+    const chart = new Chart({
+      container,
+      autoFit: true,
+      height: 300,
+    });
+
+    chart.data(chartData);
+
+    chart.interval()
+      .encode('x', 'date')
+      .encode('y', metric)
+      .style('fill', color);
+
+    chart.axis('x', {
+      label: {
+        formatter: (text) => text.split('-')[1],
+        autoRotate: true,
+      },
+    });
+
+    chart.render();
+    chartInstance.current = chart;
+  };
+
+  useEffect(() => {
+    fetchData().then((fetchedData) => {
+      if (fetchedData.length > 0) {
+        const aggregatedData = aggregateDataByMonth(fetchedData);
+        setData(fetchedData);
+        setFilteredCasesData(aggregatedData);
+        setFilteredDeathsData(aggregatedData);
+        renderChart(chartRef1.current, aggregatedData, 'positiveIncrease', chartInstance1, '#4CAF50');
+        renderChart(chartRef2.current, aggregatedData, 'deathIncrease', chartInstance2, '#FF5252');
+      }
+    });
+  }, []);
+
+  const handleCasesFilterChange = (state: string) => {
+    setSelectedCasesState(state);
+    let filteredData = state === 'All States' ? data : data.filter(item => item.stateName === state);
+    filteredData = aggregateDataByMonth(filteredData);
+    setFilteredCasesData(filteredData);
+    renderChart(chartRef1.current, filteredData, 'positiveIncrease', chartInstance1, '#4CAF50');
+  };
+
+  const handleDeathsFilterChange = (state: string) => {
+    setSelectedDeathsState(state);
+    let filteredData = state === 'All States' ? data : data.filter(item => item.stateName === state);
+    filteredData = aggregateDataByMonth(filteredData);
+    setFilteredDeathsData(filteredData);
+    renderChart(chartRef2.current, filteredData, 'deathIncrease', chartInstance2, '#FF5252');
+  };
+
+  const columns = [
+    {
+      title: 'Month',
+      dataIndex: 'date',
+      key: 'date',
+    },
+    {
+      title: 'New Cases',
+      dataIndex: 'positiveIncrease',
+      key: 'positiveIncrease',
+    },
+    {
+      title: 'New Deaths',
+      dataIndex: 'deathIncrease',
+      key: 'deathIncrease',
+    },
+  ];
+
+  const stateMenuItems = (handleFilterChange: (state: string) => void) => [
+    { key: 'all', label: 'All States', onClick: () => handleFilterChange('All States') },
+    ...Object.entries(stateMapping).map(([id, state]) => ({
+      key: id,
+      label: state,
+      onClick: () => handleFilterChange(state),
+    })),
+  ];
+
+  return (
+    <Layout>
+      <Header className={styles.header}>
+        <div className={styles.titleContainer}>
+          <Title level={2} className={styles.title}>US Covid Data Report using Graphical Charts</Title>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+      </Header>
+      <Content style={{ padding: '0 50px' }}>
+        <div style={{ background: '#fff', padding: 24, minHeight: 280 }}>
+          <div style={{ marginBottom: 16 }}>
+            <h2>New Cases Over Time</h2>
+            <Dropdown menu={{ items: stateMenuItems(handleCasesFilterChange) }} trigger={['click']}>
+              <a onClick={e => e.preventDefault()}>
+                {selectedCasesState} ▼
+              </a>
+            </Dropdown>
+            <div ref={chartRef1}></div>
+            <Table columns={columns} dataSource={filteredCasesData} rowKey="date" />
+          </div>
+          <div>
+            <h2>New Deaths Over Time</h2>
+            <Dropdown menu={{ items: stateMenuItems(handleDeathsFilterChange) }} trigger={['click']}>
+              <a onClick={e => e.preventDefault()}>
+                {selectedDeathsState} ▼
+              </a>
+            </Dropdown>
+            <div ref={chartRef2}></div>
+            <Table columns={columns} dataSource={filteredDeathsData} rowKey="date" />
+          </div>
+        </div>
+      </Content>
+    </Layout>
   );
 }
