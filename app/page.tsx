@@ -142,7 +142,7 @@ export default function Home() {
 
     chart.axis('x', {
       label: {
-        formatter: (text) => text.split('-')[1],
+        formatter: (text: string) => text.split('-')[1],
         autoRotate: true,
       },
     });
