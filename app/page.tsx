@@ -187,6 +187,10 @@ export default function Home() {
         setFilteredDeathsData(aggregated);
         setFilteredYearlyCasesData(aggregated);
         setFilteredYearlyDeathsData(aggregated);
+        setSelectedCasesState(selectedCasesState);
+        setSelectedDeathsState(selectedDeathsState);
+        setSelectedYearlyCasesYear(selectedYearlyCasesYear);
+        setSelectedYearlyDeathsYear(selectedYearlyDeathsYear);
         renderChart(chartRef1.current, aggregated, 'positiveIncrease', chartInstance1, '#4CAF50'); // Green color for New Cases
         renderChart(chartRef2.current, aggregated, 'deathIncrease', chartInstance2, '#FF5252'); // Red color for New Deaths
         renderYearlyPieChart(chartRef3.current, aggregated, 'positiveIncrease', chartInstance3);
