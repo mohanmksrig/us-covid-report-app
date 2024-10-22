@@ -14,13 +14,21 @@
   
   .title {
     margin: 0 !important;
-    padding: 16px 48px !important;
+    padding: 16px 48px !important; /* Adjust padding to ensure text doesn't overlap with Avatar */
     font-size: 24px !important;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
   
+  .avatar {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  
+  /* Media query for mobile responsiveness */
   @media (max-width: 768px) {
     .title {
       font-size: 18px !important;
