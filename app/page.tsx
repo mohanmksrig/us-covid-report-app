@@ -7,7 +7,7 @@
 
 'use client';
 
-import { Layout, Card, Avatar, Table, Tabs, message, Tooltip, Dropdown, Menu, Typography } from 'antd';
+import { Layout, Card, Table, Tabs, message, Tooltip, Dropdown, Menu, Typography } from 'antd';
 import styles from './Pagedesign.module.css';
 import { FilterOutlined, DownloadOutlined } from '@ant-design/icons';
 import { Chart } from '@antv/g2';
