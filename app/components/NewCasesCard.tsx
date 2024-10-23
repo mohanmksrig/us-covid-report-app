@@ -14,6 +14,7 @@ interface NewCasesCardProps {
 
 export default function NewCasesCard({ filteredCasesData, chartRef, handleCasesFilterChange, exportToExcel }: NewCasesCardProps) {
   return (
+    /* New Cases Over Time Card start */
     <Card
       title="New Cases Over Time - Monthly Data"
       extra={(
@@ -39,5 +40,8 @@ export default function NewCasesCard({ filteredCasesData, chartRef, handleCasesF
         </TabPane>
       </Tabs>
     </Card>
+    /* New Cases Over Time Card end */
   );
 }
+
+/* NewCaseCard Script End */

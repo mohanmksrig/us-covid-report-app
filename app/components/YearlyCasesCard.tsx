@@ -14,6 +14,7 @@ exportToExcel: (data: CovidData[], fileName: string) => void;
 
 export default function YearlyCasesCard({ filteredYearlyCasesData, chartRef, handleYearlyCasesFilterChange, exportToExcel }: YearlyCasesCardProps) {
   return (
+    /* New Cases - Yearly Data Card start */
     <Card
       title="New Cases - Yearly Data"
       extra={(
@@ -39,5 +40,8 @@ export default function YearlyCasesCard({ filteredYearlyCasesData, chartRef, han
         </TabPane>
       </Tabs>
     </Card>
+    /* New Cases - Yearly Data Card end */
   );
 }
+
+/* YearlyCasesCard Script End */

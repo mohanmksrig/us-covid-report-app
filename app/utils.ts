@@ -5,6 +5,7 @@ import axios from 'axios';
 import * as XLSX from 'xlsx';
 import { Chart } from '@antv/g2';
 
+// Static mapping of state IDs to state names
 export const stateMapping: Record<number, string> = {
     1: 'Alabama',
     2: 'Alaska',
@@ -89,6 +90,7 @@ export const yearlyColumns = [
   },
 ];
 
+// Function to fetch COVID-19 data from the API
 export const fetchData = async (): Promise<{ aggregated: CovidData[], raw: CovidData[] }> => {
   try {
     const res = await axios.get<CovidData[]>('https://api.covidtracking.com/v1/us/daily.json');
@@ -107,6 +109,7 @@ export const fetchData = async (): Promise<{ aggregated: CovidData[], raw: Covid
   }
 };
 
+// Function to aggregate data by month
 export const aggregateDataByMonth = (data: CovidData[]): CovidData[] => {
   const monthlyData: { [key: string]: CovidData } = {};
 
@@ -127,6 +130,7 @@ export const aggregateDataByMonth = (data: CovidData[]): CovidData[] => {
   return Object.values(monthlyData).sort((a, b) => a.date.localeCompare(b.date));
 };
 
+// Function to aggregate yearly data
 export const yearlyData = (metric: 'positiveIncrease' | 'deathIncrease', data: CovidData[]) => {
   return data.reduce((acc, item) => {
     const year = item.year!;
@@ -138,6 +142,7 @@ export const yearlyData = (metric: 'positiveIncrease' | 'deathIncrease', data: C
   }, {} as Record<number, { year: number; total: number }>);
 };
 
+// Function to export data to Excel
 export const exportToExcel = (data: CovidData[] | { year: number; total: number }[], fileName: string) => {
   const ws = XLSX.utils.json_to_sheet(data);
   const wb = XLSX.utils.book_new();
@@ -145,6 +150,7 @@ export const exportToExcel = (data: CovidData[] | { year: number; total: number 
   XLSX.writeFile(wb, `${fileName}.xlsx`);
 };
 
+// Function to generate state filter menu
 export const stateMenu = (handleFilterChange: (state: string) => void): MenuProps['items'] => [
     {
       key: 'all',
@@ -157,7 +163,8 @@ export const stateMenu = (handleFilterChange: (state: string) => void): MenuProp
       onClick: () => handleFilterChange(state)
     }))
   ];
-  
+
+// Function to generate year filter menu
 export const yearMenu = (handleFilterChange: (year: number | null) => void, data: CovidData[] | undefined): MenuProps['items'] => [
 {
     key: 'all',
@@ -173,6 +180,7 @@ export const yearMenu = (handleFilterChange: (year: number | null) => void, data
     })) : [])
 ];
 
+// Function to render line charts
 export const renderChart = (container: HTMLElement | null, chartData: CovidData[], metric: keyof CovidData, chartInstance: React.MutableRefObject<Chart | null>, color: string) => {
   if (!container || chartData.length === 0) return;
 
@@ -204,6 +212,7 @@ export const renderChart = (container: HTMLElement | null, chartData: CovidData[
   chartInstance.current = chart;
 };
 
+// Function to render yearly pie charts
 export const renderYearlyPieChart = (container: HTMLElement | null, chartData: CovidData[], metric: 'positiveIncrease' | 'deathIncrease', chartInstance: React.MutableRefObject<Chart | null>) => {
   if (!container || chartData.length === 0) return;
 
@@ -251,3 +260,5 @@ export const renderYearlyPieChart = (container: HTMLElement | null, chartData: C
   chart.render();
   chartInstance.current = chart;
 };
+
+/* Utils Script End */

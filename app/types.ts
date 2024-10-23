@@ -1,3 +1,4 @@
+// Define the type for the data fetched from the API
 export interface CovidData {
     date: string;
     states: number;

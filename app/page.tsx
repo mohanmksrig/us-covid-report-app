@@ -1,5 +1,14 @@
+/**
+ * Author: Mohankumar Selvaraj
+ * Email: mohanmksri@gmail.com
+ * Date: 22-Oct-2024
+ * Description: This Application is a Next-JS web application that visualizes COVID-19 data for the United States. 
+ */
+
+// 'use client';
 'use client';
 
+//Import required libraries and components files 
 import { Layout } from 'antd';
 import { useEffect, useRef, useState } from 'react';
 import { Chart } from '@antv/g2';
@@ -15,6 +24,7 @@ import YearlyDeathsCard from './components/YearlyDeathsCard';
 const { Content } = Layout;
 
 export default function Home() {
+  // State variables for data and filters
   const [data, setData] = useState<CovidData[]>([]);
   const [filteredCasesData, setFilteredCasesData] = useState<CovidData[]>([]);
   const [filteredDeathsData, setFilteredDeathsData] = useState<CovidData[]>([]);
@@ -34,6 +44,7 @@ export default function Home() {
   const chartInstance3 = useRef<Chart | null>(null);
   const chartInstance4 = useRef<Chart | null>(null);
 
+  // Effect hook to fetch and render initial data
   useEffect(() => {
     fetchData().then(({ aggregated, raw }) => {
       if (aggregated.length > 0 && raw.length > 0) {
@@ -54,6 +65,7 @@ export default function Home() {
     });
   }, []);
 
+  // Handler for cases filter change
   const handleCasesFilterChange = (state: string) => {
     setSelectedCasesState(state);
     let filteredData = state === 'All States' ? data : data.filter(item => item.stateName === state);
@@ -62,6 +74,7 @@ export default function Home() {
     renderChart(chartRef1.current, filteredData, 'positiveIncrease', chartInstance1, '#4CAF50');
   };
 
+  // Handler for deaths filter change
   const handleDeathsFilterChange = (state: string) => {
     setSelectedDeathsState(state);
     let filteredData = state === 'All States' ? data : data.filter(item => item.stateName === state);
@@ -70,6 +83,7 @@ export default function Home() {
     renderChart(chartRef2.current, filteredData, 'deathIncrease', chartInstance2, '#FF5252');
   };
 
+  // Handler for yearly cases filter change
   const handleYearlyCasesFilterChange = (year: number | null) => {
     setSelectedYearlyCasesYear(year);
     const filteredData = year ? data.filter(item => item.year === year) : data;
@@ -77,6 +91,7 @@ export default function Home() {
     renderYearlyPieChart(chartRef3.current, filteredData, 'positiveIncrease', chartInstance3);
   };
 
+  // Handler for yearly deaths filter change
   const handleYearlyDeathsFilterChange = (year: number | null) => {
     setSelectedYearlyDeathsYear(year);
     const filteredData = year ? data.filter(item => item.year === year) : data;
@@ -87,39 +102,59 @@ export default function Home() {
   return (
     <Layout style={{ minHeight: '100vh' }}>
       <Header />
+      {/* Main content section start */}
       <Content style={{ padding: '20px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
+          {/* New Cases Over Time Card start -- app/components/NewCasesCard.tsx */}
           <NewCasesCard
             filteredCasesData={filteredCasesData}
             chartRef={chartRef1}
             handleCasesFilterChange={handleCasesFilterChange}
             exportToExcel={exportToExcel}
           />
+          {/* New Cases Over Time Card end */}
+
+          {/* New Deaths Over Time Card start -- app/components/NewDeathsCard.tsx */}
           <NewDeathsCard
             filteredDeathsData={filteredDeathsData}
             chartRef={chartRef2}
             handleDeathsFilterChange={handleDeathsFilterChange}
             exportToExcel={exportToExcel}
           />
+          {/* New Deaths Over Time Card end */}
         </div>
+        
 
+        {/* Positive Cases Over Time - Pie Chart - start -- app/components/PieChart.tsx */}
         <PieChart data={data} />
+        {/* Positive Cases Over Time - Pie Chart - end */}
 
+        {/* Yearly Data Charts start */}
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          {/* New Cases - Yearly Data Card start -- app/components/YearlyCasesCard.tsx */}
           <YearlyCasesCard
             filteredYearlyCasesData={filteredYearlyCasesData}
             chartRef={chartRef3}
             handleYearlyCasesFilterChange={handleYearlyCasesFilterChange}
             exportToExcel={exportToExcel}
           />
+          {/* New Cases - Yearly Data Card end */}  
+
+          {/* New Deaths - Yearly Data Card start -- app/components/YearlyDeathsCard.tsx */}
           <YearlyDeathsCard
             filteredYearlyDeathsData={filteredYearlyDeathsData}
             chartRef={chartRef4}
             handleYearlyDeathsFilterChange={handleYearlyDeathsFilterChange}
             exportToExcel={exportToExcel}
           />
+          {/* New Deaths - Yearly Data Card end */}
+
         </div>
+        {/* Yearly Data Charts end */}
       </Content>
+      {/* Main content section end */}
     </Layout>
   );
 }
+
+/* Page Script End */

@@ -14,6 +14,7 @@ interface NewDeathsCardProps {
 
 export default function NewDeathsCard({ filteredDeathsData, chartRef, handleDeathsFilterChange, exportToExcel }: NewDeathsCardProps) {
   return (
+    /* New Deaths Over Time Card start */
     <Card
       title="New Deaths Over Time - Monthly Data"
       extra={(
@@ -39,5 +40,8 @@ export default function NewDeathsCard({ filteredDeathsData, chartRef, handleDeat
         </TabPane>
       </Tabs>
     </Card>
+    /* New Deaths Over Time Card end */
   );
 }
+
+/* NewDeathCard Script End */

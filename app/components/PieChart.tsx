@@ -17,6 +17,7 @@ export default function PieChart({ data }: PieChartProps) {
     }
   }, [data]);
 
+  // Function to render the pie chart
   const renderPieChart = (container: HTMLElement, chartData: CovidData[]) => {
     const pieChartData = chartData.slice(0, 10).map(item => ({
       type: item.date,
@@ -42,11 +43,15 @@ export default function PieChart({ data }: PieChartProps) {
   };
 
   return (
+    /* Positive Cases Over Time - Pie Chart - start */
     <Card
       title="Positive Cases Over Time - Monthly Data"
       style={{ marginBottom: '20px' }}
     >
       <div ref={pieChartRef} style={{ width: '100%', height: '400px' }}></div>
     </Card>
+    /* Positive Cases Over Time - Pie Chart - end */
   );
 }
+
+/* PieChart Script End */

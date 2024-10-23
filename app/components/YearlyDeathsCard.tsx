@@ -14,6 +14,7 @@ interface YearlyDeathsCardProps {
 
 export default function YearlyDeathsCard({ filteredYearlyDeathsData, chartRef, handleYearlyDeathsFilterChange, exportToExcel }: YearlyDeathsCardProps) {
   return (
+    /* New Deaths - Yearly Data Card start */
     <Card
       title="New Deaths - Yearly Data"
       extra={(
@@ -39,5 +40,8 @@ export default function YearlyDeathsCard({ filteredYearlyDeathsData, chartRef, h
         </TabPane>
       </Tabs>
     </Card>
+    /* New Deaths - Yearly Data Card end */
   );
 }
+
+/* YearlyDeathCard Script End */
