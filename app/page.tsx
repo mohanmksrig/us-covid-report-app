@@ -1,10 +1,6 @@
 'use client';
 
-import { Layout, Card, Table, Tabs, message, Tooltip, Dropdown, Menu, Typography } from 'antd';
-import styles from './Pagedesign.module.css';
-import { FilterOutlined, DownloadOutlined } from '@ant-design/icons';
-import { Chart } from '@antv/g2';
-import { Pie } from '@antv/g2plot';
+import { Layout } from 'antd';
 import { useEffect, useRef, useState } from 'react';
 import { Chart } from '@antv/g2';
 import { CovidData } from './types';
@@ -50,8 +46,8 @@ export default function Home() {
         setSelectedDeathsState(selectedDeathsState);
         setSelectedYearlyCasesYear(selectedYearlyCasesYear);
         setSelectedYearlyDeathsYear(selectedYearlyDeathsYear);
-        renderChart(chartRef1.current, aggregated, 'positiveIncrease', chartInstance1, '#4CAF50'); // Green color for New Cases
-        renderChart(chartRef2.current, aggregated, 'deathIncrease', chartInstance2, '#FF5252'); // Red color for New Deaths
+        renderChart(chartRef1.current, aggregated, 'positiveIncrease', chartInstance1, '#4CAF50');
+        renderChart(chartRef2.current, aggregated, 'deathIncrease', chartInstance2, '#FF5252');
         renderYearlyPieChart(chartRef3.current, aggregated, 'positiveIncrease', chartInstance3);
         renderYearlyPieChart(chartRef4.current, aggregated, 'deathIncrease', chartInstance4);
       }
@@ -127,4 +123,3 @@ export default function Home() {
     </Layout>
   );
 }
-{/* Script End */}
