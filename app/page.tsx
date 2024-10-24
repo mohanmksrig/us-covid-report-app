@@ -20,6 +20,7 @@ import NewDeathsCard from './components/NewDeathsCard';
 import PieChart from './components/PieChart';
 import YearlyCasesCard from './components/YearlyCasesCard';
 import YearlyDeathsCard from './components/YearlyDeathsCard';
+import styles from './Pagedesign.module.css';
 
 const { Content } = Layout;
 
@@ -103,8 +104,8 @@ export default function Home() {
     <Layout style={{ minHeight: '100vh' }}>
       <Header />
       {/* Main content section start */}
-      <Content style={{ padding: '20px' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
+      <Content className={styles.content}>
+      <div className={styles.cardContainer}>
           {/* New Cases Over Time Card start -- app/components/NewCasesCard.tsx */}
           <NewCasesCard
             filteredCasesData={filteredCasesData}
@@ -126,14 +127,17 @@ export default function Home() {
         
 
         {/* Positive Cases Over Time - Pie Chart - start -- app/components/PieChart.tsx */}
-        <PieChart data={data} />
+        <div className={styles.cardContainer}>
+          <PieChart data={data} />
+        </div>
         {/* Positive Cases Over Time - Pie Chart - end */}
 
         {/* Yearly Data Charts start */}
-        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <div className={styles.cardContainer}>
           {/* New Cases - Yearly Data Card start -- app/components/YearlyCasesCard.tsx */}
           <YearlyCasesCard
             filteredYearlyCasesData={filteredYearlyCasesData}
+            allData={data}
             chartRef={chartRef3}
             handleYearlyCasesFilterChange={handleYearlyCasesFilterChange}
             exportToExcel={exportToExcel}
@@ -143,6 +147,7 @@ export default function Home() {
           {/* New Deaths - Yearly Data Card start -- app/components/YearlyDeathsCard.tsx */}
           <YearlyDeathsCard
             filteredYearlyDeathsData={filteredYearlyDeathsData}
+            allData={data}
             chartRef={chartRef4}
             handleYearlyDeathsFilterChange={handleYearlyDeathsFilterChange}
             exportToExcel={exportToExcel}

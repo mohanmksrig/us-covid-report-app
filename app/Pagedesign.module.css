@@ -1,44 +1,133 @@
 .header {
-    background: #fff;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
+  background: #fff;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.titleContainer {
+  width: 100%;
+  text-align: center;
+}
+
+.title {
+  margin: 0 !important;
+  padding: 16px 48px !important;
+  font-size: 24px !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.avatar {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* Responsive styles for the entire page */
+.content {
+  padding: 0px 20px 20px 20px;
+}
+
+.cardContainer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.card {
+  width: 48%;
+}
+
+.fullWidthCard {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+/* Media queries for responsive design */
+@media (max-width: 1024px) {
+  .content {
+    padding: 15px;
   }
-  
-  .titleContainer {
+
+  .card,
+  .fullWidthCard {
     width: 100%;
-    text-align: center;
+    margin-bottom: 15px;
   }
-  
+
+  .cardContainer {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 768px) {
   .title {
-    margin: 0 !important;
-    padding: 16px 48px !important; /* Adjust padding to ensure text doesn't overlap with Avatar */
-    font-size: 24px !important;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    font-size: 18px !important;
+    padding: 16px 40px !important;
   }
-  
-  .avatar {
-    position: absolute;
-    right: 16px;
-    top: 50%;
-    transform: translateY(-50%);
+
+  .content {
+    padding: 10px;
   }
-  
-  /* Media query for mobile responsiveness */
-  @media (max-width: 768px) {
-    .title {
-      font-size: 18px !important;
-      padding: 16px 40px !important;
-    }
+
+  .card {
+    margin-bottom: 10px;
   }
-  
-  @media (max-width: 480px) {
-    .title {
-      font-size: 14px !important;
-      padding: 16px 32px !important;
-    }
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: 14px !important;
+    padding: 16px 32px !important;
   }
+
+  .content {
+    padding: 5px;
+  }
+}
+
+/* Responsive styles for charts */
+.chartContainer {
+  width: 100%;
+  height: 300px;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+@media (max-width: 768px) {
+  .chartContainer {
+    height: 250px;
+  }
+}
+
+@media (max-width: 480px) {
+  .chartContainer {
+    height: 200px;
+  }
+}
+
+/* Add this new class for the pie chart */
+.pieChartContainer {
+  width: 100%;
+  height: 400px;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+@media (max-width: 768px) {
+  .pieChartContainer {
+    height: 350px;
+  }
+}
+
+@media (max-width: 480px) {
+  .pieChartContainer {
+    height: 300px;
+  }
+}

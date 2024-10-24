@@ -2,6 +2,7 @@ import { Card } from 'antd';
 import { CovidData } from '../types';
 import { useEffect, useRef } from 'react';
 import { Pie } from '@antv/g2plot';
+import styles from '../Pagedesign.module.css';
 
 interface PieChartProps {
   data: CovidData[];
@@ -44,12 +45,10 @@ export default function PieChart({ data }: PieChartProps) {
 
   return (
     /* Positive Cases Over Time - Pie Chart - start */
-    <Card
-      title="Positive Cases Over Time - Monthly Data"
-      style={{ marginBottom: '20px' }}
-    >
-      <div ref={pieChartRef} style={{ width: '100%', height: '400px' }}></div>
+    <Card className={`${styles.card} ${styles.fullWidthCard}`} title="Positive Cases Over Time - Pie Chart">
+      <div ref={pieChartRef} className={styles.pieChartContainer}></div>
     </Card>
+  /* Positive Cases Over Time - Pie Chart - end */
     /* Positive Cases Over Time - Pie Chart - end */
   );
 }

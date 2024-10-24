@@ -4,6 +4,7 @@ import { CovidData } from './types';
 import axios from 'axios';
 import * as XLSX from 'xlsx';
 import { Chart } from '@antv/g2';
+import styles from '../Pagedesign.module.css';
 
 // Static mapping of state IDs to state names
 export const stateMapping: Record<number, string> = {
@@ -165,20 +166,23 @@ export const stateMenu = (handleFilterChange: (state: string) => void): MenuProp
   ];
 
 // Function to generate year filter menu
-export const yearMenu = (handleFilterChange: (year: number | null) => void, data: CovidData[] | undefined): MenuProps['items'] => [
-{
-    key: 'all',
-    label: 'All Years',
-    onClick: () => handleFilterChange(null)
-},
-...(data ? Array.from(new Set(data.map(item => item.year).filter((year): year is number => year !== undefined)))
-    .sort()
-    .map(year => ({
-    key: year.toString(),
-    label: year.toString(),
-    onClick: () => handleFilterChange(year)
-    })) : [])
-];
+export const yearMenu = (handleFilterChange: (year: number | null) => void, data: CovidData[]): MenuProps['items'] => {
+  const years = Array.from(new Set(data.map(item => item.year).filter((year): year is number => year !== undefined)))
+    .sort((a, b) => b - a); // Sort years in descending order
+
+  return [
+    {
+      key: 'all',
+      label: 'All Years',
+      onClick: () => handleFilterChange(null)
+    },
+    ...years.map(year => ({
+      key: year.toString(),
+      label: year.toString(),
+      onClick: () => handleFilterChange(year)
+    }))
+  ];
+};
 
 // Function to render line charts
 export const renderChart = (container: HTMLElement | null, chartData: CovidData[], metric: keyof CovidData, chartInstance: React.MutableRefObject<Chart | null>, color: string) => {
@@ -191,7 +195,8 @@ export const renderChart = (container: HTMLElement | null, chartData: CovidData[
   const chart = new Chart({
     container,
     autoFit: true,
-    height: 300,
+    height: container.clientHeight,
+    padding: 'auto',
   });
 
   chart.data(chartData);
@@ -225,7 +230,8 @@ export const renderYearlyPieChart = (container: HTMLElement | null, chartData: C
   const chart = new Chart({
     container,
     autoFit: true,
-    height: 300,
+    height: container.clientHeight,
+    padding: 'auto', 
   });
   
   chart.data(pieChartData);
