@@ -4,7 +4,6 @@ import { CovidData } from './types';
 import axios from 'axios';
 import * as XLSX from 'xlsx';
 import { Chart } from '@antv/g2';
-import styles from '../Pagedesign.module.css';
 
 // Static mapping of state IDs to state names
 export const stateMapping: Record<number, string> = {
