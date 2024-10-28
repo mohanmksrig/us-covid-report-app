@@ -12,6 +12,7 @@ export async function GET() {
   } 
   // eslint-disable-next-line no-unused-vars
   catch (error) {
+    // eslint-disable-next-line no-unused-vars
     return NextResponse.json({ error: 'Failed to fetch data' }, { status: 500 });
   }
 }
@@ -31,6 +32,7 @@ export async function POST(request) {
   } 
   // eslint-disable-next-line no-unused-vars
   catch (error) {
+    // eslint-disable-next-line no-unused-vars
     return NextResponse.json({ error: 'Failed to insert data' }, { status: 500 });
   }
 }

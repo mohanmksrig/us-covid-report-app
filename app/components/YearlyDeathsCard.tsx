@@ -53,3 +53,5 @@ export default function YearlyDeathsCard({ filteredYearlyDeathsData, allData, ch
     </Card>
   );
 }
+
+/* YearlyDeathCard Script End */
