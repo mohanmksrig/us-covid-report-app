@@ -10,6 +10,7 @@ export async function GET() {
     const covidData = await sql`SELECT * FROM CovidData`;
     return NextResponse.json({ covidData: covidData.rows }, { status: 200 });
   } 
+  // eslint-disable-next-line no-unused-vars
   catch (error) {
     return NextResponse.json({ error: 'Failed to fetch data' }, { status: 500 });
   }
@@ -28,6 +29,7 @@ export async function POST(request) {
     `;
     return NextResponse.json({ message: 'Data inserted successfully' }, { status: 201 });
   } 
+  // eslint-disable-next-line no-unused-vars
   catch (error) {
     return NextResponse.json({ error: 'Failed to insert data' }, { status: 500 });
   }
