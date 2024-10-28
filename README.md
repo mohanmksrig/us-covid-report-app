@@ -38,6 +38,7 @@ This project is a comprehensive COVID-19 data visualization dashboard for the Un
 
 ## Project Structure
 
+```plaintext
 app/
 ├── api/
 │   └── covid/
@@ -45,14 +46,14 @@ app/
 ├── components/
 │   ├── CovidForm.tsx        # Data entry form with validation
 │   ├── CovidTable.tsx       # Displays COVID data in tabular format
-│   |── CovidBarChart.tsx    # Visualizes country-wise COVID cases
-|   ├── Header.tsx           # App header with title and navigation
+│   ├── CovidBarChart.tsx    # Visualizes country-wise COVID cases
+│   ├── Header.tsx           # App header with title and navigation
 │   ├── NavMenu.tsx          # Navigation between dashboard and form views
-│   |── NewCasesCard.tsx     # Shows new COVID cases trends
-|   |── NewDeathsCard.tsx    # Shows death cases trends
-│   |── PieChart.tsx         # Circular visualization of COVID data
-|   ├── YearlyCasesCard.tsx  # Yearly COVID cases summary
-│   ├── YearlyDeathsCard.tsx # Yearly death cases summary
+│   ├── NewCasesCard.tsx     # Shows new COVID cases trends
+│   ├── NewDeathsCard.tsx    # Shows death cases trends
+│   ├── PieChart.tsx         # Circular visualization of COVID data
+│   ├── YearlyCasesCard.tsx  # Yearly COVID cases summary
+│   └── YearlyDeathsCard.tsx # Yearly death cases summary
 ├── covid-form/
 │   └── page.tsx             # Data entry and visualization page
 ├── page.tsx                 # Main dashboard with charts and statistics
@@ -62,7 +63,7 @@ app/
 └── CovidForm.module.css     # Form-specific styles
 public/
 └── assets/                  # Static assets
-
+```
 
 ## Key Components
 

@@ -36,12 +36,8 @@ export default function CovidForm() {
     hospitalized: 0,
     country: '',
   });
-  const [data, setData] = useState<CovidData[]>([]);
+  
   const [alertMessage, setAlertMessage] = useState<string | null>(null);
-
-  useEffect(() => {
-    fetchCovidData();
-  }, []);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -71,20 +67,6 @@ export default function CovidForm() {
     } else {
       setAlertMessage("Failed to add data. Please try again.");
       setTimeout(() => setAlertMessage(null), 3000);
-    }
-  };
-
-  const fetchCovidData = async () => {
-    try {
-      const response = await fetch('/api/covid');
-      if (!response.ok) throw new Error('Failed to fetch data');
-
-      const result = await response.json();
-      if (Array.isArray(result.covidData)) setData(result.covidData);
-      else setData([]);
-    } catch (error) {
-      console.error("Failed to fetch Covid data:", error);
-      setData([]);
     }
   };
 
