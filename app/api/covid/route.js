@@ -1,6 +1,5 @@
 // Import required dependencies
 import { sql } from '@vercel/postgres';
-import { NextResponse } from 'next/server';
 
 /**
  * GET endpoint to fetch all COVID data
