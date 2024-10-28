@@ -12,29 +12,57 @@ This project is a comprehensive COVID-19 data visualization dashboard for the Un
 - Exportable data to Excel
 - Responsive design using Ant Design components
 - Mobile-friendly layout and components
+- Real-time data updates
+- Data Entry Form for COVID-19 statistics
+- Server-side data persistence using Vercel Postgres
+- Navigation menu for easy switching between dashboard and form views
+- Responsive navigation controls
+- Seamless client-side routing between pages
+- Consistent UI across different views
 
 ## Tech Stack
 
-- Next.js (React framework)
-- TypeScript
-- Ant Design (UI components)
-- @antv/g2 (Charting library)
-- Axios (HTTP client)
-- XLSX (Excel file generation)
-- CSS Modules (for component-specific styling)
+- **Frontend**
+  - Next.js 14 (React framework)
+  - TypeScript
+  - Ant Design (UI components)
+  - @antv/g2 (Charting library)
+  - Axios (HTTP client)
+  - XLSX (Excel file generation)
+  - CSS Modules (for component-specific styling)
+
+- **Backend**
+  - Next.js API Routes
+  - Vercel Postgres
+  - @vercel/postgres
 
 ## Project Structure
 
-- `app/`: Main application directory
-  - `components/`: Reusable React components
-  - `styles/`: CSS Module files for component styling
-    - `PageDesign.module.css`: Main stylesheet for page layout and responsiveness
-  - `types.ts`: TypeScript interfaces
-  - `utils.ts`: Utility functions
-  - `page.tsx`: Main page component
-  - `types.ts`: Define the types
-  - `utils.ts`: Main page component support file and fetch API Data
-- `public/`: Static assets
+app/
+├── api/
+│   └── covid/
+│       └── route.js         # Handles API requests for COVID data using Vercel Postgres
+├── components/
+│   ├── CovidForm.tsx        # Data entry form with validation
+│   ├── CovidTable.tsx       # Displays COVID data in tabular format
+│   |── CovidBarChart.tsx    # Visualizes country-wise COVID cases
+|   ├── Header.tsx           # App header with title and navigation
+│   ├── NavMenu.tsx          # Navigation between dashboard and form views
+│   |── NewCasesCard.tsx     # Shows new COVID cases trends
+|   |── NewDeathsCard.tsx    # Shows death cases trends
+│   |── PieChart.tsx         # Circular visualization of COVID data
+|   ├── YearlyCasesCard.tsx  # Yearly COVID cases summary
+│   ├── YearlyDeathsCard.tsx # Yearly death cases summary
+├── covid-form/
+│   └── page.tsx             # Data entry and visualization page
+├── page.tsx                 # Main dashboard with charts and statistics
+├── types.ts                 # TypeScript interfaces for data structures
+├── utils.ts                 # Helper functions for data processing
+├── PageDesign.module.css    # Main stylesheet for layout
+└── CovidForm.module.css     # Form-specific styles
+public/
+└── assets/                  # Static assets
+
 
 ## Key Components
 
@@ -43,35 +71,55 @@ This project is a comprehensive COVID-19 data visualization dashboard for the Un
 3. `YearlyCasesCard`: Shows yearly cases distribution
 4. `YearlyDeathsCard`: Shows yearly deaths distribution
 5. `PieChart`: Visualizes positive cases over time
+6. `CovidForm`: Input form for new COVID-19 data entries
+7. `CovidTable`: Displays all COVID-19 data in a tabular format
+8. `CovidBarChart`: Visualizes total positive cases by country
+9. `NavMenu`: Provides navigation between dashboard and form views
 
-## Styling and Responsiveness
+## Database Schema
 
-The application uses a combination of Ant Design's built-in responsive components and custom CSS for optimal display across various device sizes:
+The application uses a Vercel Postgres database with the following structure:
 
-- `PageDesign.module.css`: Contains responsive grid layouts and media queries for different screen sizes
-- Flexbox and CSS Grid: Utilized for flexible and responsive component arrangements
-- Ant Design's responsive grid system: Ensures proper alignment and spacing of UI elements
+CREATE TABLE CovidData (
+    id SERIAL PRIMARY KEY,
+    date DATE,
+    positive INTEGER,
+    negative INTEGER,
+    death INTEGER,
+    recovered INTEGER,
+    hospitalized INTEGER,
+    country VARCHAR(255)
+);
 
-## Mobile Responsiveness
+## Responsive Design
 
-The dashboard is optimized for mobile devices with the following features:
-
-- Responsive charts that adjust to screen width
-- Collapsible sections for better navigation on small screens
-- Touch-friendly UI elements for easy interaction on mobile devices
-- Adjusted font sizes and spacing for improved readability on small screens
+The application is fully responsive across all device sizes:
+- Desktop: Full-width layout with side-by-side form and chart
+- Tablet: Adjusted spacing and component sizes
+- Mobile: Stacked layout for optimal viewing on smaller screens
 
 ## Data Source
 
 The application fetches data from the COVID Tracking Project API:
 `https://api.covidtracking.com/v1/us/daily.json`
 
-## Setup and Running
+## API Endpoints
+
+- `GET /api/covid`
+  - Retrieves all COVID-19 data entries
+  - Returns data in JSON format
+
+- `POST /api/covid`
+  - Adds new COVID-19 data entry
+  - Required fields: date, positive, negative, death, recovered, hospitalized, country
+
+## Setup and Installation
 
 1. Clone the repository
-2. Install dependencies: `npm install`
-3. Run the development server: `npm run dev`
-4. Open `http://localhost:3000` in your browser
+2. Install dependencies
+3. Set up environment variables
+4. Run the development server
+5. Open `http://localhost:3000` in your browser
 
 ## Testing Responsiveness
 

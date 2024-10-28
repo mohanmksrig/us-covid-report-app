@@ -21,6 +21,7 @@ import PieChart from './components/PieChart';
 import YearlyCasesCard from './components/YearlyCasesCard';
 import YearlyDeathsCard from './components/YearlyDeathsCard';
 import styles from './Pagedesign.module.css';
+import NavMenu from './components/NavMenu';
 
 const { Content } = Layout;
 
@@ -103,6 +104,7 @@ export default function Home() {
   return (
     <Layout style={{ minHeight: '100vh' }}>
       <Header />
+      <NavMenu currentPage="dashboard" />
       {/* Main content section start */}
       <Content className={styles.content}>
       <div className={styles.cardContainer}>
