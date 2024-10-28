@@ -1,11 +1,14 @@
+// Import required dependencies
 import { Card, Tabs, Table, Tooltip, Dropdown } from 'antd';
 import { DownloadOutlined, FilterOutlined } from '@ant-design/icons';
 import { CovidData } from '../types';
 import { columns, stateMenu } from '../utils';
 import styles from '../Pagedesign.module.css';
 
+// Destructure Tabs.TabPane for easier usage
 const { TabPane } = Tabs;
 
+//Interface for NewCasesCard props
 interface NewCasesCardProps {
   filteredCasesData: CovidData[];
   chartRef: React.RefObject<HTMLDivElement>;
@@ -13,6 +16,10 @@ interface NewCasesCardProps {
   exportToExcel: (data: CovidData[], fileName: string) => void;
 }
 
+/**
+ * NewCasesCard Component
+ * Displays new COVID cases data in both chart and table format
+ */
 export default function NewCasesCard({ filteredCasesData, chartRef, handleCasesFilterChange, exportToExcel }: NewCasesCardProps) {
   return (
     /* New Cases Over Time Card start */

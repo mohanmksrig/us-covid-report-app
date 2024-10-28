@@ -1,6 +1,8 @@
+// Import required dependencies
 import React from 'react';
 import styles from '../CovidForm.module.css';
 
+// Interface defining the structure of COVID data
 interface CovidData {
   id: number;
   date: string;
@@ -12,12 +14,14 @@ interface CovidData {
   country: string;
 }
 
+// Props interface for the CovidTable component
 interface CovidTableProps {
   data: CovidData[];
 }
 
 export default function CovidTable({ data }: CovidTableProps) {
   return (
+    // Main container for the table section
     <div className={styles.tableSection}>
       <h2 className={styles.title}>Covid Data Gathering Table</h2>
       <div className={styles.tableWrapper}>
@@ -34,8 +38,10 @@ export default function CovidTable({ data }: CovidTableProps) {
               </tr>
             </thead>
             <tbody>
+              {/* Conditional rendering based on data availability */}
               {data.length > 0 ? (
-                data.map((entry) => (
+                // Map through data array to create table rows
+              data.map((entry) => (
                   <tr key={entry.id}>
                     <td data-label="Date">{new Date(entry.date).toLocaleDateString()}</td>
                     <td data-label="Positive">{entry.positive}</td>
@@ -57,3 +63,5 @@ export default function CovidTable({ data }: CovidTableProps) {
     </div>
   );
 }
+
+/* CovidTable Script End */

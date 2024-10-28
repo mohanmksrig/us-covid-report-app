@@ -1,18 +1,25 @@
+// Import required dependencies
 import { Card } from 'antd';
 import { CovidData } from '../types';
 import { useEffect, useRef } from 'react';
 import { Pie } from '@antv/g2plot';
 import styles from '../Pagedesign.module.css';
 
+// Interface for PieChart props
 interface PieChartProps {
   data: CovidData[];
 }
 
+/**
+ * PieChart Component
+ * Displays COVID data in a pie chart format
+ */
 export default function PieChart({ data }: PieChartProps) {
   const pieChartRef = useRef<HTMLDivElement>(null);
   const pieChartInstance = useRef<Pie | null>(null);
 
-  useEffect(() => {
+  // Effect to render/update chart when data changes
+    useEffect(() => {
     if (pieChartRef.current) {
       renderPieChart(pieChartRef.current, data);
     }

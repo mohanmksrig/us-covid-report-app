@@ -1,11 +1,14 @@
+// Import required dependencies
 import { Card, Tabs, Table, Tooltip, Dropdown } from 'antd';
 import { DownloadOutlined, FilterOutlined } from '@ant-design/icons';
 import { CovidData } from '../types';
 import { columns, stateMenu } from '../utils';
 import styles from '../Pagedesign.module.css';
 
+// Destructure Tabs.TabPane for easier usage
 const { TabPane } = Tabs;
 
+//Interface for NewDeathCard props
 interface NewDeathsCardProps {
   filteredDeathsData: CovidData[];
   chartRef: React.RefObject<HTMLDivElement>;
@@ -13,6 +16,10 @@ interface NewDeathsCardProps {
   exportToExcel: (data: CovidData[], fileName: string) => void;
 }
 
+/**
+ * NewDeathCard Component
+ * Displays new COVID death data in both chart and table format
+ */
 export default function NewDeathsCard({ filteredDeathsData, chartRef, handleDeathsFilterChange, exportToExcel }: NewDeathsCardProps) {
   return (
     /* New Deaths Over Time Card start */

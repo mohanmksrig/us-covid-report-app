@@ -1,11 +1,14 @@
+// Import required dependencies
 import { Card, Tabs, Table, Tooltip, Dropdown } from 'antd';
 import { DownloadOutlined, FilterOutlined } from '@ant-design/icons';
 import { CovidData } from '../types';
 import { yearlyColumns, yearMenu, yearlyData } from '../utils';
 import styles from '../Pagedesign.module.css';
 
+// Destructure Tabs.TabPane for easier usage
 const { TabPane } = Tabs;
 
+//Interface for YearlyCasesCard props
 interface YearlyCasesCardProps {
   filteredYearlyCasesData: CovidData[];
   allData: CovidData[];
@@ -14,6 +17,10 @@ interface YearlyCasesCardProps {
   exportToExcel: (data: CovidData[], fileName: string) => void;
 }
 
+/**
+ * YearlyCasesCard Component
+ * Displays yearly COVID cases data in both chart and table format
+ */
 export default function YearlyCasesCard({ filteredYearlyCasesData, allData, chartRef, handleYearlyCasesFilterChange, exportToExcel }: YearlyCasesCardProps) {
   return (
     /* New Cases - Yearly Data Card start */

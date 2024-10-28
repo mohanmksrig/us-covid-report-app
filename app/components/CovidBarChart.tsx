@@ -1,10 +1,12 @@
-"use client"; // Add this line
+"use client";
 
+// Import required dependencies
 import React, { useEffect, useState } from 'react';
 import { Card, Spin } from 'antd';
 import { Chart } from '@antv/g2';
 import styles from '../CovidForm.module.css';
 
+// Interface for COVID data structure
 interface CovidData {
   id: number;
   date: string;
@@ -16,19 +18,23 @@ interface CovidData {
   country: string;
 }
 
+// Interface for aggregated data used in the chart
 interface AggregatedData {
   country: string;
   positive: number;
 }
 
 const CovidBarChart: React.FC = () => {
+  // State for storing COVID data and loading status
   const [data, setData] = useState<CovidData[]>([]);
   const [loading, setLoading] = useState(true);
 
+  // Fetch data when component mounts
   useEffect(() => {
     fetchData();
   }, []);
 
+  // Function to fetch COVID data from API
   const fetchData = async () => {
     try {
       const response = await fetch('/api/covid');
@@ -42,8 +48,10 @@ const CovidBarChart: React.FC = () => {
     }
   };
 
+  // Effect hook to create and update chart when data changes
   useEffect(() => {
     if (data.length > 0) {
+      // Aggregate data by country, summing positive cases
       const aggregatedData: AggregatedData[] = Object.values(
         data.reduce((acc: { [key: string]: AggregatedData }, curr) => {
           if (!acc[curr.country]) {
@@ -57,12 +65,14 @@ const CovidBarChart: React.FC = () => {
         }, {})
       );
 
+      // Initialize new G2 Chart instance
       const chart = new Chart({
         container: 'covid-bar-chart',
         autoFit: true,
         height: 400,
       });
 
+      // Set chart data and scale configuration
       chart.data(aggregatedData);
       chart.scale({
         country: {
@@ -74,6 +84,7 @@ const CovidBarChart: React.FC = () => {
         },
       });
 
+      // Configure bar chart properties
       const interval = chart.interval();
       interval.encode('x', 'country')
               .encode('y', 'positive')
@@ -94,14 +105,17 @@ const CovidBarChart: React.FC = () => {
 
       chart.interaction('element-active');
 
+      // Render the chart
       chart.render();
 
+      // Cleanup function to destroy chart when component unmounts
       return () => {
         chart.destroy();
       };
     }
   }, [data]);
 
+  // Render component
   return (
     <Card className={styles.card} title="Total COVID-19 Positive Cases by Country">
       {loading ? (
@@ -114,3 +128,5 @@ const CovidBarChart: React.FC = () => {
 };
 
 export default CovidBarChart;
+
+/* CovidBarChart Script End */
